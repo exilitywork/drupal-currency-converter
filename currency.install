@@ -1,0 +1,89 @@
+<?php
+
+use Drupal\currency\Utility\Currency;
+
+/**
+ * Implements hook_schema().
+ */
+function currency_schema(){
+    $schema['currency_list'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+            ),
+            'symbol' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => '',
+            ),
+           'description' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => '',
+            ),
+            'is_used' => array(
+                'type' => 'int',
+                'length' => 1,
+                'size' => 'tiny',
+                'not null' => TRUE,
+                'default' => 0,
+            ),
+        ),
+        'primary key' => array('id'),
+        'unique keys' => array(
+            'symbol'  => array('symbol')
+        ),
+    );
+
+    $schema['currency_history'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+                'not null' => TRUE,
+                'unsigned' => TRUE,
+            ),
+            'base' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => '',
+            ),
+            'quote' => array(
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'default' => '',
+            ),
+            'rate' => array(
+                'type' => 'float',
+                'length' => 1,
+                'size' => 'normal',
+                'not null' => TRUE,
+                'default' => 0,
+            ),
+            'timestamp' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'length' => 11,
+                'not null' => TRUE,
+                'default' => 0,
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+
+    return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function currency_install() {
+    // load and save to DB last rates and symbols list 
+    Currency::loadSymbols();
+    $rates = Currency::loadLatestRates();
+}

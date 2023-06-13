@@ -1,0 +1,6 @@
+currency.admin:
+  title: 'Currency Converter settings'
+  description: 'Set API key and choose currencies'
+  route_name: currency.admin
+  parent: 'system.admin_config_content'
+  menu_name: currency

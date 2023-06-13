@@ -1,0 +1,14 @@
+currency.converter:
+  path: 'converter'
+  defaults:
+    _form: '\Drupal\currency\Form\CurrencyConverterForm'
+    _title: 'Hello World!'
+  requirements:
+    _permission: 'access content'
+currency.admin:
+  path: 'admin/config/content/currency'
+  defaults:
+    _form: '\Drupal\currency\Form\CurrencyConfigForm'
+    _title: 'Currency Config'
+  requirements:
+    _permission: 'configure tablefield'

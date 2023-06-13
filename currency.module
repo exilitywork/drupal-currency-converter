@@ -1,0 +1,32 @@
+<?php
+
+use Drupal\currency\Utility\Currency;
+
+/**
+ * Implements hook_form_alter().
+ */
+function currency_form_alter(&$form, &$form_state, $form_id) {
+    // delete submit button from converter form
+    if ($form_id == 'currency_converter_form') {
+        unset($form['actions']['submit']);
+    }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function currency_cron(){
+    // check last execution time of crontask and load symbols and rates daily
+    $cronLast = 0;
+    $cronLast = \Drupal::config('currency.settings')->get('cron_last');
+    if (date('Ymd', $cronLast) != date('Ymd')) {
+        Currency::loadSymbols();
+        Currency::loadLatestRates();
+
+        // save to settings last execution time of crontask
+        \Drupal::service('config.factory')
+            ->getEditable('currency.settings')
+            ->set('cron_last', strtotime(date('Ymd')))
+            ->save();
+    }
+}

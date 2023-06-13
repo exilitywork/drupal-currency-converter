@@ -1,0 +1,5 @@
+name: 'Currency Converter'
+description: 'Module for converting and storing currencies.'
+type: module
+configure: currency.admin
+core_version_requirement: ^8 || ^9
